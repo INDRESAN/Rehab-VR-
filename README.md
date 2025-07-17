@@ -693,20 +693,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Development Tools:** Python Flask, Firebase Console, Unity Editor
 - **Open Source Community:** Flask community, Unity developers, Firebase developers
 
-## 📞 Contact
-
-- **Project Lead:** [Your Name](mailto:your.email@example.com)
-- **GitHub Issues:** [Report bugs and request features](https://github.com/INDRESAN/Rehab-VR-/issues)
-- **Documentation:** [docs.rehab-vr.com](https://docs.rehab-vr.com)
-- **Support:** [support@rehab-vr.com](mailto:support@rehab-vr.com)
-- **LinkedIn:** [Company Profile](https://linkedin.com/company/rehab-vr)
-
-### Community
-- **Discord:** [Join our developer community](https://discord.gg/rehab-vr)
-- **Reddit:** [r/RehabVR](https://reddit.com/r/RehabVR)
-- **Twitter:** [@RehabVR](https://twitter.com/RehabVR)
-
----
 
 <div align="center">
   <p>Made with ❤️ for the rehabilitation community</p>
