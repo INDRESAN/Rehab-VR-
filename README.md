@@ -4,9 +4,11 @@
   <img src="assets/logo.png" alt="Rehab-VR Logo" width="200"/>
   
   ![Unity](https://img.shields.io/badge/Unity-2023.3%2B-black?logo=unity)
-  ![VR](https://img.shields.io/badge/VR-Ready-blue)
+  ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
+  ![Flask](https://img.shields.io/badge/Flask-2.3%2B-green?logo=flask)
+  ![Firebase](https://img.shields.io/badge/Firebase-Firestore-orange?logo=firebase)
+  ![Oculus](https://img.shields.io/badge/Oculus-Quest-blue?logo=oculus)
   ![License](https://img.shields.io/badge/License-MIT-green)
-  ![Build](https://img.shields.io/badge/Build-Passing-brightgreen)
 </div>
 
 ## 📋 Table of Contents
@@ -28,14 +30,22 @@
 
 ## 🎯 Overview
 
-Rehab-VR- is a cutting-edge virtual reality application designed to revolutionize rehabilitation therapy through immersive, interactive, and data-driven experiences. Our platform bridges the gap between traditional physical therapy and modern technology, providing patients with engaging exercises while giving healthcare providers powerful tools for monitoring and customizing treatment plans.
+Rehab-VR- is a cutting-edge virtual reality rehabilitation platform that combines Unity VR development with a robust Python Flask backend and Firebase cloud database. Designed specifically for Oculus Quest devices, our platform provides immersive, data-driven rehabilitation experiences that bridge the gap between traditional physical therapy and modern technology.
+
+### Technology Stack
+- **Frontend:** Unity 2023.3+ with Oculus Integration SDK
+- **Backend:** Python Flask RESTful API
+- **Database:** Firebase Firestore (real-time NoSQL)
+- **Authentication:** Firebase Auth
+- **Storage:** Firebase Storage for media files
+- **VR Platform:** Oculus Quest 2/3/Pro (primary focus)
 
 ### Key Benefits
-- **Enhanced Patient Engagement:** VR environments make rehabilitation exercises more enjoyable and motivating
-- **Precise Progress Tracking:** Real-time data collection and analysis for evidence-based therapy adjustments
-- **Accessibility:** Designed for users of all ages and technical skill levels
-- **Cost-Effective:** Reduces the need for specialized equipment and frequent clinic visits
-- **Scalable:** Suitable for individual use, clinics, and large healthcare systems
+- **Seamless VR Experience:** Optimized for Oculus Quest devices with native hand tracking
+- **Real-time Data Sync:** Firebase integration ensures instant progress updates
+- **Scalable Architecture:** Flask backend handles multiple concurrent VR sessions
+- **Cloud-first Design:** All data securely stored and accessible from anywhere
+- **Cross-platform Backend:** Python Flask API accessible from multiple VR platforms
 
 ## ✨ Features
 
@@ -68,71 +78,135 @@ Rehab-VR- is a cutting-edge virtual reality application designed to revolutioniz
 - **Customizable UI:** Adjustable text size, contrast, and color schemes
 
 ### 🔧 Multi-Platform Support
-- **Meta Quest 2/3/Pro**
-- **HTC Vive/Vive Pro**
-- **PlayStation VR2**
-- **Windows Mixed Reality**
-- **Pico 4 Enterprise**
+- **Primary Platform:** Oculus Quest 2/3/Pro (Optimized)
+- **Oculus Integration:** Native hand tracking, haptic feedback, spatial audio
+- **Future Support:** Meta Quest Pro, Quest 3S
+- **Backend Compatibility:** Any device capable of HTTP requests to Flask API
 
 ## 💻 System Requirements
 
-### Minimum Requirements
-- **OS:** Windows 10 64-bit / macOS 10.15+ / Linux Ubuntu 18.04+
-- **CPU:** Intel i5-8400 / AMD Ryzen 5 2600
-- **RAM:** 8 GB
-- **GPU:** NVIDIA GTX 1060 / AMD RX 580
-- **Storage:** 5 GB available space
-- **VR Headset:** Compatible VR device (see supported platforms)
+### Unity VR Client (Oculus Quest)
+- **Device:** Oculus Quest 2/3/Pro
+- **OS:** Android-based Oculus OS
+- **Storage:** 2 GB available space on headset
+- **Network:** Wi-Fi connection for cloud sync
+- **Oculus Software:** Latest Oculus software version
 
-### Recommended Requirements
-- **OS:** Windows 11 64-bit / macOS 12+ / Linux Ubuntu 20.04+
-- **CPU:** Intel i7-10700K / AMD Ryzen 7 3700X
-- **RAM:** 16 GB
-- **GPU:** NVIDIA RTX 3070 / AMD RX 6700 XT
-- **Storage:** 10 GB available space (SSD recommended)
-- **Network:** Broadband internet connection for updates and cloud sync
+### Development Environment
+- **OS:** Windows 10/11 64-bit (recommended) / macOS 10.15+ / Linux Ubuntu 18.04+
+- **Unity:** Unity 2023.3.0f1 or later
+- **Python:** Python 3.8+
+- **IDE:** Visual Studio Code, PyCharm, or Unity Editor
+- **Git:** For version control
+
+### Backend Server Requirements
+- **Python:** 3.8+ with Flask 2.3+
+- **Database:** Firebase project with Firestore enabled
+- **RAM:** 4 GB minimum, 8 GB recommended
+- **Storage:** 1 GB for application files
+- **Network:** Stable internet connection for Firebase
+
+### Firebase Setup
+- **Firestore:** Database for user data and progress tracking
+- **Firebase Auth:** User authentication and session management
+- **Firebase Storage:** Media files (exercise videos, avatars)
+- **Firebase Functions:** Optional for serverless operations
 
 ## 🚀 Installation
 
-### Quick Start
+### Prerequisites
+1. **Firebase Project Setup:**
+   ```bash
+   # Create a new Firebase project at https://console.firebase.google.com
+   # Enable Firestore Database
+   # Enable Authentication (Email/Password)
+   # Enable Storage
+   # Download service account key (firebase-admin-key.json)
+   ```
+
+2. **Python Environment:**
+   ```bash
+   # Create virtual environment
+   python -m venv rehab-vr-env
+   source rehab-vr-env/bin/activate  # On Windows: rehab-vr-env\Scripts\activate
+   ```
+
+### Backend Setup (Flask + Firebase)
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/INDRESAN/Rehab-VR-.git
    cd Rehab-VR-
    ```
 
-2. **Unity Setup (Recommended):**
-   - Install Unity Hub from [unity.com](https://unity.com/download)
-   - Install Unity Editor 2023.3.0f1 or later
-   - Open Unity Hub → Add → Select the cloned project folder
-   - Click on the project to open it in Unity
-
-3. **Install Required Packages:**
+2. **Install Python dependencies:**
    ```bash
-   # Unity will automatically prompt to install required packages
-   # Or manually install via Package Manager:
-   # XR Interaction Toolkit
-   # XR Plugin Management
-   # OpenXR Plugin
+   pip install -r requirements.txt
    ```
 
-4. **VR SDK Setup:**
-   - Configure XR settings in Unity (Edit → Project Settings → XR Plug-in Management)
-   - Select your target VR platform (Oculus, OpenXR, etc.)
-   - Import platform-specific SDKs if required
+3. **Configure Firebase:**
+   ```bash
+   # Place your firebase-admin-key.json in the backend/config/ directory
+   cp path/to/firebase-admin-key.json backend/config/
+   
+   # Set environment variables
+   export FIREBASE_PROJECT_ID="your-project-id"
+   export FIREBASE_STORAGE_BUCKET="your-project-id.appspot.com"
+   ```
 
-### Alternative Installation Methods
+4. **Run the Flask server:**
+   ```bash
+   cd backend
+   python app.py
+   # Server will start on http://localhost:5000
+   ```
 
-#### Pre-built Releases
-1. Download the latest release from [Releases](https://github.com/INDRESAN/Rehab-VR-/releases)
-2. Extract the archive
-3. Run the installer or executable file
-4. Follow the setup wizard
+### Unity VR Client Setup
+1. **Unity Installation:**
+   - Install Unity Hub and Unity 2023.3.0f1+
+   - Add Android Build Support module
+   - Install Oculus Integration SDK
 
-#### Docker Deployment
+2. **Project Setup:**
+   ```bash
+   # Open Unity Hub
+   # Add Project → Select the 'unity-client' folder
+   # Open the project in Unity
+   ```
+
+3. **Configure Oculus Integration:**
+   - Import Oculus Integration package from Asset Store
+   - Configure XR settings (Edit → Project Settings → XR Plug-in Management)
+   - Enable Oculus provider
+   - Set up hand tracking in Oculus settings
+
+4. **API Configuration:**
+   ```csharp
+   // In Assets/Scripts/Config/APIConfig.cs
+   public class APIConfig
+   {
+       public static string BASE_URL = "http://localhost:5000/api";
+       public static string FIREBASE_CONFIG = "your-firebase-config";
+   }
+   ```
+
+### Quick Deploy (Development)
 ```bash
-docker pull indresan/rehab-vr:latest
-docker run -p 8080:8080 indresan/rehab-vr:latest
+# Terminal 1: Start Flask backend
+cd backend
+python app.py
+
+# Terminal 2: Build and deploy to Oculus
+cd unity-client
+# Build via Unity Editor → File → Build Settings → Android → Build and Run
+```
+
+### Docker Deployment (Production)
+```bash
+# Build and run backend container
+docker build -t rehab-vr-backend ./backend
+docker run -p 5000:5000 -e FIREBASE_PROJECT_ID="your-id" rehab-vr-backend
+
+# Unity client must be built separately and sideloaded to Oculus devices
 ```
 
 ## 🎮 Usage
@@ -218,46 +292,235 @@ docker run -p 8080:8080 indresan/rehab-vr:latest
 
 ### System Overview
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   VR Client     │    │  Unity Engine   │    │  Data Backend   │
-│                 │◄──►│                 │◄──►│                 │
-│ • User Interface│    │ • Exercise Logic│    │ • Progress Data │
-│ • Input Handling│    │ • 3D Rendering  │    │ • User Profiles │
-│ • VR Integration│    │ • Physics Engine│    │ • Analytics API │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                     Oculus Quest VR Client                     │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│  │   Unity UI      │    │  Exercise Logic │    │ Oculus SDK      │
+│  │                 │    │                 │    │                 │
+│  │ • Menu Systems  │    │ • VR Exercises  │    │ • Hand Tracking │
+│  │ • Progress View │    │ • Physics Engine│    │ • Haptic Feed   │
+│  │ • Settings      │    │ • 3D Rendering  │    │ • Spatial Audio │
+│  └─────────────────┘    └─────────────────┘    └─────────────────┘
+└─────────────────────────────────────────────────────────────────┘
+                                   │
+                              HTTP/HTTPS
+                                   │
+┌─────────────────────────────────────────────────────────────────┐
+│                    Python Flask Backend                        │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│  │   REST API      │    │  Business Logic │    │ Firebase Client │
+│  │                 │    │                 │    │                 │
+│  │ • User Auth     │    │ • Exercise Mgmt │    │ • Firestore DB  │
+│  │ • Progress API  │    │ • Progress Track│    │ • Auth Service  │
+│  │ • Exercise API  │    │ • Data Analytics│    │ • Storage API   │
+│  └─────────────────┘    └─────────────────┘    └─────────────────┘
+└─────────────────────────────────────────────────────────────────┘
+                                   │
+                              Firebase API
+                                   │
+┌─────────────────────────────────────────────────────────────────┐
+│                    Firebase Services                           │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│  │   Firestore     │    │  Authentication │    │   Storage       │
+│  │                 │    │                 │    │                 │
+│  │ • User Profiles │    │ • JWT Tokens    │    │ • Media Files   │
+│  │ • Progress Data │    │ • Session Mgmt  │    │ • Avatars       │
+│  │ • Exercise Meta │    │ • Role-based    │    │ • Backups       │
+│  └─────────────────┘    └─────────────────┘    └─────────────────┘
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ### Key Components
-- **Exercise Manager:** Handles exercise selection, progression, and scoring
-- **Analytics Engine:** Processes performance data and generates insights
-- **User Manager:** Manages profiles, preferences, and authentication
-- **VR Controller:** Interfaces with VR hardware and input systems
-- **Data Synchronization:** Handles offline/online data sync
+
+#### Unity VR Client
+- **ExerciseManager.cs:** Handles exercise selection, progression, and VR interactions
+- **NetworkManager.cs:** Manages HTTP requests to Flask backend
+- **OculusIntegration.cs:** Interfaces with Oculus SDK for hand tracking and haptics
+- **ProgressTracker.cs:** Local progress caching and sync with backend
+- **UIManager.cs:** VR UI system with Oculus-optimized interactions
+
+#### Flask Backend
+- **app.py:** Main Flask application and routing
+- **auth.py:** Firebase authentication middleware
+- **models.py:** Data models for users, exercises, and progress
+- **database.py:** Firebase Firestore operations
+- **analytics.py:** Progress analysis and reporting
+
+#### Firebase Services
+- **Firestore Collections:**
+  - `users/` - User profiles and preferences
+  - `exercises/` - Exercise metadata and configurations
+  - `progress/` - Session data and performance metrics
+  - `therapists/` - Healthcare provider accounts
 
 ## 📚 API Documentation
 
-### Exercise API
-```csharp
-// Start a new exercise session
-ExerciseSession session = ExerciseManager.StartSession(exerciseId, userId);
+### Flask Backend Endpoints
 
-// Get real-time performance data
-PerformanceData data = session.GetCurrentPerformance();
+#### Authentication
+```python
+# POST /api/auth/register
+{
+    "email": "user@example.com",
+    "password": "password123",
+    "user_type": "patient"  # or "therapist"
+}
 
-// Complete and save session
-session.Complete();
+# POST /api/auth/login
+{
+    "email": "user@example.com",
+    "password": "password123"
+}
+
+# Response
+{
+    "token": "firebase_jwt_token",
+    "user_id": "user_uuid",
+    "expires_in": 3600
+}
 ```
 
-### Progress Tracking API
-```csharp
-// Get user progress for specific exercise
-Progress progress = ProgressTracker.GetProgress(userId, exerciseId);
+#### User Management
+```python
+# GET /api/users/profile
+# Headers: Authorization: Bearer <token>
 
-// Generate progress report
-Report report = ReportGenerator.GenerateReport(userId, dateRange);
+# PUT /api/users/profile
+{
+    "name": "John Doe",
+    "age": 45,
+    "condition": "stroke_recovery",
+    "difficulty_level": "beginner"
+}
 ```
 
-For complete API documentation, visit our [API Docs](https://docs.rehab-vr.com/api).
+#### Exercise Management
+```python
+# GET /api/exercises
+# Returns list of available exercises
+
+# GET /api/exercises/{exercise_id}
+# Returns specific exercise configuration
+
+# POST /api/exercises/{exercise_id}/start
+{
+    "user_id": "user_uuid",
+    "difficulty": "medium"
+}
+
+# Response
+{
+    "session_id": "session_uuid",
+    "exercise_config": {...},
+    "start_time": "2025-07-17T10:00:00Z"
+}
+```
+
+#### Progress Tracking
+```python
+# POST /api/progress/session
+{
+    "session_id": "session_uuid",
+    "exercise_id": "exercise_uuid",
+    "performance_data": {
+        "accuracy": 0.85,
+        "completion_time": 120,
+        "movement_quality": 0.78,
+        "repetitions": 15
+    },
+    "biometric_data": {
+        "heart_rate": [80, 85, 90],
+        "hand_positions": [[x, y, z], ...]
+    }
+}
+
+# GET /api/progress/user/{user_id}
+# Returns user's progress history
+
+# GET /api/progress/analytics/{user_id}
+# Returns analytics and insights
+```
+
+### Unity C# API Usage
+
+#### Network Manager
+```csharp
+public class NetworkManager : MonoBehaviour
+{
+    private string baseUrl = "http://localhost:5000/api";
+    
+    public async Task<LoginResponse> Login(string email, string password)
+    {
+        var loginData = new LoginRequest { email = email, password = password };
+        var response = await PostAsync<LoginResponse>("/auth/login", loginData);
+        return response;
+    }
+    
+    public async Task<ExerciseConfig> GetExercise(string exerciseId)
+    {
+        return await GetAsync<ExerciseConfig>($"/exercises/{exerciseId}");
+    }
+}
+```
+
+#### Progress Tracker
+```csharp
+public class ProgressTracker : MonoBehaviour
+{
+    public async Task SubmitProgress(SessionData sessionData)
+    {
+        var progressData = new ProgressSubmission
+        {
+            session_id = sessionData.SessionId,
+            exercise_id = sessionData.ExerciseId,
+            performance_data = sessionData.PerformanceMetrics,
+            biometric_data = sessionData.BiometricData
+        };
+        
+        await networkManager.PostAsync("/progress/session", progressData);
+    }
+}
+```
+
+### Firebase Data Structure
+
+#### Firestore Collections
+```javascript
+// users/{user_id}
+{
+  "email": "user@example.com",
+  "name": "John Doe",
+  "user_type": "patient",
+  "profile": {
+    "age": 45,
+    "condition": "stroke_recovery",
+    "created_at": "2025-07-17T10:00:00Z"
+  }
+}
+
+// exercises/{exercise_id}
+{
+  "title": "Arm Reach Exercise",
+  "description": "Improve shoulder mobility",
+  "category": "upper_extremity",
+  "difficulty_levels": ["beginner", "intermediate", "advanced"],
+  "vr_scene": "arm_reach_scene"
+}
+
+// progress/{user_id}/sessions/{session_id}
+{
+  "exercise_id": "exercise_uuid",
+  "start_time": "2025-07-17T10:00:00Z",
+  "end_time": "2025-07-17T10:05:00Z",
+  "performance": {
+    "accuracy": 0.85,
+    "completion_time": 300,
+    "repetitions": 12
+  }
+}
+```
+
+For complete API documentation and testing, visit our [API Docs](https://docs.rehab-vr.com/api) or use the included Postman collection.
 
 ## 🤝 Contributing
 
@@ -271,14 +534,31 @@ We welcome contributions from the community! Please read our [Contributing Guide
    ```
 3. **Set up development environment:**
    ```bash
+   # Backend setup
+   cd backend
+   python -m venv venv
+   source venv/bin/activate  # Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   pip install -r requirements-dev.txt
+   
    # Install pre-commit hooks
    pre-commit install
    
-   # Run tests
-   npm test
+   # Run backend tests
+   python -m pytest tests/
+   
+   # Frontend setup (Unity)
+   # Open Unity Hub and load the unity-client project
+   # Ensure Oculus Integration SDK is installed
    ```
-4. **Make your changes and test thoroughly**
-5. **Submit a pull request**
+4. **Configure Firebase for development:**
+   ```bash
+   # Create a test Firebase project
+   # Add test configuration to backend/config/firebase-test.json
+   export FIREBASE_PROJECT_ID="your-test-project"
+   ```
+5. **Make your changes and test thoroughly**
+6. **Submit a pull request**
 
 ### Contribution Types
 - 🐛 Bug fixes
@@ -290,68 +570,109 @@ We welcome contributions from the community! Please read our [Contributing Guide
 
 ## 🧪 Testing
 
-### Running Tests
+### Backend Testing (Flask + Firebase)
 ```bash
 # Unit tests
-npm run test:unit
+cd backend
+python -m pytest tests/unit/ -v
 
-# Integration tests
-npm run test:integration
+# Integration tests (requires Firebase test project)
+python -m pytest tests/integration/ -v
 
-# VR-specific tests (requires VR headset)
-npm run test:vr
+# API endpoint tests
+python -m pytest tests/api/ -v
 
-# Performance tests
-npm run test:performance
+# Test with coverage
+python -m pytest --cov=app tests/
+```
+
+### Unity Testing
+```bash
+# Unity Test Framework
+# Open Unity → Window → General → Test Runner
+# Run Play Mode tests for VR functionality
+# Run Edit Mode tests for logic components
+
+# Manual VR Testing Checklist:
+# - Hand tracking accuracy
+# - Exercise completion flow
+# - Progress data sync
+# - Oculus integration features
+```
+
+### Firebase Testing
+```bash
+# Firestore Rules Testing
+cd backend
+firebase emulators:start --only firestore
+python -m pytest tests/firestore/ -v
+
+# Authentication Testing
+python -m pytest tests/auth/ -v
+```
+
+### Performance Testing
+```bash
+# Load testing for Flask API
+cd backend
+locust -f tests/performance/locustfile.py
+
+# VR Performance Testing
+# Use Unity Profiler during VR sessions
+# Monitor frame rate, memory usage, and network calls
 ```
 
 ### Test Coverage
-- Unit tests: >90% code coverage
-- Integration tests: Critical user workflows
-- VR tests: Hardware compatibility and performance
-- Accessibility tests: WCAG 2.1 compliance
+- **Backend:** >90% code coverage (pytest-cov)
+- **Unity:** Core VR functionality and API integration
+- **Firebase:** Database operations and authentication
+- **Integration:** End-to-end VR session workflows
 
 ## 🔧 Troubleshooting
 
 ### Common Issues
 
-#### VR Headset Not Detected
-- **Solution:** Ensure VR software is running and headset is properly connected
-- **Check:** USB connections, display port, and tracking system setup
+#### Oculus Connection Issues
+- **Solution:** Ensure Oculus app is running and developer mode is enabled
+- **Check:** USB debugging enabled, headset connected to same network
 
-#### Performance Issues
-- **Solution:** Lower graphics settings in the options menu
-- **Check:** System meets minimum requirements, close other applications
+#### Firebase Authentication Errors
+- **Solution:** Verify Firebase project configuration and API keys
+- **Check:** Firebase rules allow read/write access for authenticated users
 
-#### Exercise Not Starting
-- **Solution:** Restart the application and check for updates
-- **Check:** User profile is properly set up and calibrated
+#### Flask API Not Responding
+- **Solution:** Check if Flask server is running on correct port (5000)
+- **Check:** Firewall settings, CORS configuration, and network connectivity
+
+#### Unity Build Errors
+- **Solution:** Ensure Android Build Support is installed and Oculus SDK is imported
+- **Check:** Unity version compatibility, build settings configuration
 
 #### Data Sync Issues
-- **Solution:** Check internet connection and login credentials
-- **Check:** Firewall settings and antivirus software
+- **Solution:** Check Firebase project status and network connectivity
+- **Check:** Authentication tokens are valid and not expired
 
 For more troubleshooting help, visit our [Support Center](https://support.rehab-vr.com).
 
 ## 🗺️ Roadmap
 
 ### Version 2.0 (Q3 2025)
-- [ ] AI-powered exercise recommendations
-- [ ] Multiplayer rehabilitation sessions
-- [ ] Advanced biometric integration
-- [ ] Telehealth platform integration
+- [ ] Advanced hand gesture recognition using Oculus SDK
+- [ ] AI-powered exercise recommendations based on Firebase analytics
+- [ ] Multiplayer rehabilitation sessions with real-time sync
+- [ ] Enhanced biometric integration (heart rate, stress levels)
 
 ### Version 2.1 (Q4 2025)
-- [ ] Mobile companion app
-- [ ] Augmented reality mode
-- [ ] Voice-controlled interface
-- [ ] Machine learning-based progress prediction
+- [ ] Mobile companion app (React Native with Firebase)
+- [ ] Therapist web dashboard for remote monitoring
+- [ ] Voice-controlled interface using Oculus audio
+- [ ] Machine learning progress prediction models
 
 ### Version 3.0 (Q1 2026)
-- [ ] Full-body motion capture integration
-- [ ] Virtual reality social features
-- [ ] Integration with major EHR systems
-- [ ] Advanced haptic feedback support
+- [ ] Advanced haptic feedback integration
+- [ ] Meta Quest 3S and Quest Pro optimization
+- [ ] Integration with major EHR systems via FHIR
+- [ ] Advanced analytics dashboard with Firebase Functions
 
 ## 📄 License
 
@@ -359,15 +680,18 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Third-Party Licenses
 - Unity Engine: Unity Software License
-- OpenXR: Apache License 2.0
-- Various Unity packages: See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)
+- Oculus Integration SDK: Oculus SDK License
+- Flask: BSD License
+- Firebase: Google Cloud Platform Terms
+- Various Python packages: See [requirements.txt](backend/requirements.txt)
 
 ## 🙏 Acknowledgments
 
 - **Healthcare Advisors:** Dr. Sarah Johnson (Physical Therapy), Dr. Michael Chen (Neurology)
-- **VR Technology Partners:** Unity Technologies, Meta, HTC
+- **Technology Partners:** Unity Technologies, Meta (Oculus), Google Firebase
 - **Beta Testers:** Springfield Rehabilitation Center, Metro Physical Therapy
-- **Open Source Community:** Contributors to Unity XR Toolkit and OpenXR
+- **Development Tools:** Python Flask, Firebase Console, Unity Editor
+- **Open Source Community:** Flask community, Unity developers, Firebase developers
 
 ## 📞 Contact
 
