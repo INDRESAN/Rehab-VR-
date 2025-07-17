@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Login - Rehab VR</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #607285, #c4c8cc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            display: flex;
+            flex-direction: row-reverse;
+            width: 900px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .form-section {
+            width: 55%;
+            padding: 60px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 38px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #FFFFFF;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            font-size: 18px;
+            color: #FFFFFF;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            font-size: 18px;
+            background: rgba(0, 0, 0, 0.15);
+            color: #FFFFFF;
+            outline: none;
+            transition: 0.3s;
+            backdrop-filter: blur(8px);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: #394B5F;
+            border: none;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #2E3C4B;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-section {
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .image-section img {
+            width: 110%;
+            height: 100%;
+            object-fit: cover; 
+            border-radius: 0 20px 20px 0;
+        }
+
+        @media (max-width: 1100px) {
+            .login-container {
+                width: 95%;
+                height: auto;
+                flex-direction: column;
+            }
+
+            .form-section {
+                width: 100%;
+                padding: 50px;
+            }
+
+            .image-section {
+                width: 100%;
+                height: 350px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+<script>
+    function loginDoctor(event) {
+        event.preventDefault();
+
+        const doctorName = document.getElementById("doctor-name").value;
+        const password = document.getElementById("password").value;
+
+        if (!doctorName || !password) {
+            alert("Please enter both Doctor Name and Password.");
+            return;
+        }
+
+        // Send login request to backend
+        fetch('/doctor-login', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ doctorName, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = "/dashboard";  // Redirect to Dashboard
+            } else {
+                alert("Invalid credentials. Please try again.");
+            }
+        })
+        .catch(error => console.error("Error logging in:", error));
+    }
+</script>
+
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-container">
+            <!-- Right Section - Login Form -->
+            <div class="form-section">
+                <h2>Doctor Login</h2>
+                <p>Enter your credentials to access your dashboard.</p>
+                <form onsubmit="loginDoctor(event)">
+                    <div class="input-group">
+                        <label for="doctor-name">Doctor Name</label>
+                        <input type="text" id="doctor-name" name="doctor-name" placeholder="Enter your name" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+
+                    <button type="submit" class="login-btn">Login</button>
+                </form>
+            </div>
+
+            <!-- Left Section - VR Doctor Image -->
+            <div class="image-section">
+                <img src="https://img.freepik.com/premium-photo/fun-illustration-doctor-with-vr-helmet_183364-72320.jpg?ga=GA1.1.1731687701.1726727628&semt=ais_hybrid" alt="Doctor VR">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

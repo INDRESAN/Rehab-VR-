@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2C3E50, #4CA1AF);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            width: 80%;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            color: white;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 12px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        .info {
+            flex-grow: 1;
+            text-align: left;
+            padding: 10px;
+        }
+
+        .info h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .review-btn {
+            padding: 10px 15px;
+            background: #1ABC9C;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .review-btn:hover {
+            background: #16A085;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <script>
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/user-dashboard');
+                const data = await response.json();
+                
+                const container = document.getElementById("user-list");
+                container.innerHTML = "";
+
+                data.forEach((user, index) => {
+                    const patientID = user.patient && user.patient !== "N/A" ? user.patient : `P0${index + 1}`; 
+                    const profilePage = patientID === "P02" ? "user-profile1" : "user-profile"; 
+
+                    const userCard = document.createElement("div");
+                    userCard.className = "user-card";
+                    userCard.innerHTML = `
+                        <div class="info">
+                            <h3>${user.name || "Unknown"}</h3>
+                            <p><strong>Patient ID:</strong> ${patientID}</p>
+                            <p><strong>Latest Activity:</strong> ${user.activity || "No activity recorded"}</p>
+                            <p><strong>Latest Score:</strong> ${user.latest_score ?? "N/A"}</p>
+                        </div>
+                        <button class="review-btn" onclick="viewProfile('${patientID}', '${profilePage}')">View Report</button>
+                    `;
+                    container.appendChild(userCard);
+                });
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        }
+
+        function viewProfile(patient, profilePage) {
+    if (!patient || patient === "N/A") {
+        console.error("❌ No valid patient ID found");
+        return;
+    }
+
+    // If P02 is selected, redirect to P01's profile
+    if (patient === "P02") {
+        patient = "P01";  // Redirect P02 to P01
+    }
+
+    console.log("✅ Redirecting to:", `/user-profile?patient=${encodeURIComponent(patient)}`);
+    window.location.href = `/user-profile?patient=${encodeURIComponent(patient)}`;
+}
+
+
+
+
+        window.onload = loadUsers;
+    </script>
+
+</head>
+<body>
+    <div class="dashboard-container">
+        <h2>User Dashboard</h2>
+        <div id="user-list">
+            <!-- Users will be displayed here -->
+        </div>
+    </div>
+</body>
+</html>

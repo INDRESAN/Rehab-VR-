@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile & Score Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2C3E50, #4CA1AF);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .main-container {
+            display: flex;
+            width: 100%;
+            height: 90%;
+            gap: 20px;
+        }
+
+        .profile-container {
+            width: 25%;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: white;
+            animation: fadeIn 0.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Pushes the quote downward */
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .user-info {
+            text-align: left;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .user-info p {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px;
+            margin: 6px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .quote-box {
+            margin-top: auto;
+            padding: 15px;
+            font-size: 18px;
+            font-style: italic;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.25);
+            border-left: 5px solid #FFC107;
+            border-radius: 12px;
+            color: #FFF;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .quote-box:hover {
+            transform: scale(1.05);
+        }
+
+        .chart-container {
+            width: 75%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            width: 100%;
+            height: 50vh;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <script>
+        async function loadUserProfile() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const patient = urlParams.get("patient");
+
+            if (!patient || patient === "null" || patient === "N/A") {
+                console.error("❌ No valid patient ID found in URL.");
+                document.getElementById("user-info").innerHTML = `<h2 style="color: white;">User Not Found</h2>`;
+                return;
+            }
+
+            try {
+                console.log(`🔍 Fetching user info for Patient ID: ${patient}`);
+
+                const response = await fetch(`/api/user-info?patient=${patient}`);
+                const data = await response.json();
+
+                console.log("📩 API Response:", data);
+
+                if (!data || data.error) {
+                    console.error("❌ API returned error:", data.error);
+                    document.getElementById("user-info").innerHTML = `<h2 style="color: white;">User Not Found</h2>`;
+                    return;
+                }
+
+                document.getElementById("user-info").innerHTML = `
+                    <h2>Patient Profile</h2>
+                    <div class="user-info">
+                        <p><span class="label">Name:</span> ${data.name || "N/A"}</p>
+                        <p><span class="label">Patient ID:</span> ${data.patient || "N/A"}</p>
+                        <p><span class="label">Date of Birth:</span> ${data.dob || "N/A"}</p>
+                        <p><span class="label">Admission Date:</span> ${data.admission_date || "N/A"}</p>
+                        <p><span class="label">Activity:</span> ${data.activity || "N/A"}</p>
+                        <p><span class="label">Latest Score:</span> ${data.score ?? "N/A"}</p>
+                        <p><span class="label">Last Updated:</span> ${data.timestamp ? new Date(data.timestamp * 1000).toLocaleString() : "N/A"}</p>
+                    </div>
+                    <div class="quote-box">
+                        <p>“Your progress may be slow, but it is progress. Keep moving forward.”</p>
+                    </div>
+                `;
+
+                loadChartData(patient);
+            } catch (error) {
+                console.error("❌ Error fetching user info:", error);
+            }
+        }
+
+        async function loadChartData(patient) {
+    try {
+        console.log(`🔍 Fetching chart data for Patient: ${patient}`);
+
+        const response = await fetch(`/api/user-scores?patient=${patient}`);
+        const scoreData = await response.json();
+
+        console.log("📊 Chart Data Response:", scoreData);
+
+        if (!scoreData || scoreData.length === 0 || scoreData.error) {
+            console.log("⚠️ No score data available.");
+            document.getElementById("scoreChart").style.display = "none";
+            return;
+        }
+
+        const timestamps = scoreData.map(entry => new Date(entry.timestamp * 1000).toLocaleTimeString());
+        const scores = scoreData.map(entry => entry.score);
+
+        document.getElementById("scoreChart").style.display = "block";
+        updateChart(timestamps, scores);
+    } catch (error) {
+        console.error("❌ Error fetching score data:", error);
+    }
+}
+
+function updateChart(timestamps, scores) {
+    const ctx = document.getElementById('scoreChart').getContext('2d');
+
+    if (window.myChart) {
+        window.myChart.destroy();
+    }
+
+    window.myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: timestamps,
+            datasets: [{
+                label: 'Mobility Score',
+                data: scores,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Timestamp'
+                    }
+                },
+                y: {
+                    min: 0,
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: 'Mobility Score'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// **Auto-refresh the chart every 10 seconds to fetch new scores**
+setInterval(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const patient = urlParams.get("patient");
+    if (patient) {
+        loadChartData(patient);
+    }
+}, 10000);
+
+window.onload = loadUserProfile;
+
+
+    </script>
+</head>
+<body>
+    <div class="main-container">
+        <div class="profile-container" id="user-info"></div>
+
+        <div class="chart-container">
+            <h2 style="color:white; text-align: center;">Mobility Score Over Time</h2>
+            <canvas id="scoreChart"></canvas>
+        </div>
+    </div>
+</body>
+</html>
