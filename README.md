@@ -1,7 +1,7 @@
 # Rehab-VR-
 
 <div align="center">
-  <img src="assets/logo.png" alt="Rehab-VR Logo" width="200"/>
+  <img src="https://img.freepik.com/premium-photo/fun-illustration-doctor-with-vr-helmet_183364-72320.jpg?ga=GA1.1.1731687701.1726727628&semt=ais_hybrid" alt="Rehab-VR Logo" width="200"/>
   
   ![Unity](https://img.shields.io/badge/Unity-2023.3%2B-black?logo=unity)
   ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
